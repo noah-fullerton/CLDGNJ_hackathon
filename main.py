@@ -57,7 +57,6 @@ def register():
 #Event route
 
 
-
 def create_user(user_name, password, first_name, last_name, phone_number, email):
     #use for database
     pass
