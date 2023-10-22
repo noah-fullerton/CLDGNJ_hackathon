@@ -98,8 +98,18 @@ def create_user(user_name, password, first_name, last_name, phone_number, email)
         "email" : email
     }
     controller.insertUsers(dict_user)
-    return dict_user
-    
+
+def create_event(event_name, start_date, end_date, location, description, club):
+    dict_event ={
+        "name" : event_name,
+        "description" : description,
+        "location"  : location,
+        "start_date" : start_date,
+        "end_date" : end_date,
+        "club_id" : club
+    }
+    controller.insertEvents(dict_event)
+
 
 def check_login(user_name, Password):
     #use for database
