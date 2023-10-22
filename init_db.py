@@ -65,7 +65,27 @@ def insertUsers(data):
     VALUES (%(username)s, %(password)s, %(first_name)s, %(last_name)s, %(email)s, %(phone_number)s)'''
     cur.execute(query, data)
 
-user_dict = {
+def insertPresidents(data):
+    query = '''
+    INSERT INTO presidents (username, password, first_name, last_name, email, phone_number)
+    VALUES (%(username)s, %(password)s, %(first_name)s, %(last_name)s, %(email)s, %(phone_number)s)'''
+    cur.execute(query, data)
+    
+def insertClubs(data):
+    query = '''
+    INSERT INTO clubs (name, description, president_id)
+    VALUES (%(name)s, %(description)s, %(president_id)s)'''
+    cur.execute(query, data)
+
+def insertEvents(data):
+    query = '''
+    INSERT INTO events (name, description, location, start_date, end_date, club_id)
+    VALUES (%(name)s, %(description)s, %(location)s, %(start_date)s, %(end_date)s, %(club_id)s)'''
+    cur.execute(query, data)
+    
+
+# sample data
+sample_user = {
     "username" : "isolate",
     "password" : "1234",
     "first_name" : "joaquin",
@@ -73,7 +93,28 @@ user_dict = {
     "email" : "joaquintrujillo@mac.com",
     "phone_number" : "1234567890"
 }
-insertUsers(user_dict)
+
+sample_club = {
+        "name" : "Computer Science Club",
+        "description" : "We do cool stuff",
+        "president_id" : 1
+}
+
+sample_event = {
+    "name" : "Hackathon",
+    "description" : "We do cool stuff",
+    "location" : "Cafe",
+    "start_date" : "2019-11-11",
+    "end_date" : "2019-11-11",
+    "club_id" : "1"
+}
+
+# running insert functions
+insertUsers(sample_user)
+insertPresidents(sample_user)
+insertClubs(sample_club)
+insertEvents(sample_event)
+
 
 conn.commit()
 cur.close()
