@@ -15,13 +15,13 @@ app = create_app()
 CORS(app)
 
 #for login page get user and pass TODO: CHECK DATABASE FOR ACCOUNT IF EXIST SEND TRUE IF NOT SENF FALSE
-@app.route("/", methods=['POST'])
+@app.route("/login", methods=['POST'])
 def process():
     data = request.get_json()
-    user_name = data['user_name']
+    username = data['username']
     password = data['password']
     #check_login(user_name,password)
-    return check_login(user_name,password)
+    return check_login(username,password)
 
 #for new account registration 
 #Checks for empty inputs return false
@@ -35,7 +35,7 @@ def register():
 
     print(json.dumps(data))
 
-    user_name = data['user_name']
+    username = data['username']
     password = data['password']
     confirm_password = data['confirm_password']
     first_name = data['first_name']
@@ -43,7 +43,7 @@ def register():
     phone_number = data['phone_number']
     email = data['email']
 
-    info_list = [user_name,password,first_name,last_name,phone_number,email]
+    info_list = [username,password,first_name,last_name,phone_number,email]
     # checks if any of the data is empty
     for item in info_list:
         if(item == "" or item == " "):
@@ -51,7 +51,7 @@ def register():
     
     # SECURITY CHECK
     # if username has more than 16 characters return FALSE
-    if len(user_name) > 16:
+    if len(username) > 16:
         return jsonify({'success': 'FALSE'})
     # if password has less than 6 char OR password has more than 16 char
     if len(password) < 6 or len(password) > 16:
@@ -66,7 +66,7 @@ def register():
     first_name_split = first_name.split()
     last_name_split = last_name.split()
     password_name_split = password.split()
-    username_split = user_name.split()
+    username_split = username.split()
     special_char_check = ['@', '#', '$', '/', ',' , '{', '}', '&', '*']
 
     """
@@ -76,7 +76,7 @@ def register():
                 return ConnectionResetError
     """
     if password == confirm_password:
-        create_user_dict(user_name,password,first_name,last_name,phone_number,email)
+        create_user_dict(username,password,first_name,last_name,phone_number,email)
         return jsonify({'success': 'TRUE'})
     else:
         return jsonify({'success': 'FALSE'})
@@ -105,10 +105,20 @@ def create_event(event_name, start_date, end_date, location, description):
     event = controller.insertEvents(sample_event)
     
 
-@app.route("/all_events", methods=['POST'])
+@app.route("/all_events", methods=['GET'])
 def send_events():
     events = controller.getEvents()
-    return events
+    event_dicts = []
+    for event in events:
+        event_dict = {
+            "name": event[0],
+            "description": event[1],
+            "location": event[2],
+            "start_date": event[3],
+            "end_date": event[4],
+        }
+        event_dicts.append(event_dict)
+    return event_dicts
 
 
 def create_user_dict(user_name, password, first_name, last_name, phone_number, email):
@@ -124,11 +134,11 @@ def create_user_dict(user_name, password, first_name, last_name, phone_number, e
     return dict_user
     
 
-def check_login(user_name, Password):
-    event = controller.getSpecificUser({"username":user_name})
-    if event == []:
+def check_login(username, Password):
+    event = controller.getSpecificUser({"username":username})
+    if not event:
         return jsonify({"success":"FALSE"})
-    elif event[0][1] == user_name and event[0][2] == Password:
+    elif event[0][0] == username and event[0][1] == Password:
         return jsonify({"success":"TRUE"})
     else:       
         return jsonify({"success":"FALSE"})
@@ -136,7 +146,7 @@ def check_login(user_name, Password):
 
 if __name__ == '__main__': #main name space run here
 
-    print(send_events())
+    #print(send_events())
     for line in sys.path: #helps us see what path we are in
         print(line)  # Print path
 
