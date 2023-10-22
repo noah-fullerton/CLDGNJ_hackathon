@@ -1,5 +1,8 @@
 from flask import request, Flask, jsonify
 import sys
+import db_control
+
+controller = db_control.Controller()
 
 def create_app():
     app = Flask(__name__)
@@ -60,11 +63,12 @@ def register():
     username_split = user_name.split()
     special_char_check = ['@', '#', '$', '/', ',' , '{', '}', '&', '*']
 
-    for x in 50:
-        for y in len(special_char_check):
+    """
+    for x in range(50):
+        for y in range(len(special_char_check)):
             if(first_name_split[x] == special_char_check[y]):
                 return ConnectionResetError
-
+    """
     if password == confirm_password:
         create_user(user_name,password,first_name,last_name,phone_number,email)
         return jsonify({'success': 'TRUE'})
@@ -73,7 +77,7 @@ def register():
 
 #Event route
 @app.route("/event", methods=['GET'])
-def process():
+def event_handler():
     data = request.get_json()
     event_name = data['name']
     start_date = data['start_date']
@@ -93,7 +97,7 @@ def create_user(user_name, password, first_name, last_name, phone_number, email)
         "phone_number" : phone_number,
         "email" : email
     }
-    #USE TO CREATE ENTRY INTO DATA BASE HERE
+    controller.insertUsers(dict_user)
     return dict_user
     
 
