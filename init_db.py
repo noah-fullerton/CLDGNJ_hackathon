@@ -20,8 +20,7 @@ cur.execute('''DROP TABLE IF EXISTS events;
 
 # creating tables:
 cur.execute('''CREATE TABLE users(
-    id serial PRIMARY KEY,
-    username VARCHAR (16) UNIQUE NOT NULL,
+    username VARCHAR (16) PRIMARY KEY,
     password VARCHAR (50) NOT NULL,
     first_name VARCHAR (50) NOT NULL,
     last_name VARCHAR (50) NOT NULL,
@@ -29,29 +28,27 @@ cur.execute('''CREATE TABLE users(
     phone_number BIGINT NOT NULL);''')
 
 cur.execute('''CREATE TABLE presidents(
-    pid serial PRIMARY KEY
+    username VARCHAR(16) PRIMARY KEY
 ) INHERITS (users);''')
 
 cur.execute('''CREATE TABLE officers(
 ) INHERITS (users);''')
 
 cur.execute('''CREATE TABLE clubs(
-    id serial PRIMARY KEY,
-    name VARCHAR (50) UNIQUE NOT NULL,
+    name VARCHAR (50) PRIMARY KEY,
     description VARCHAR (500) NOT NULL,
-    president_id INT NOT NULL,
-    FOREIGN KEY (president_id) REFERENCES presidents (pid)
+    president_username VARCHAR (50) NOT NULL, 
+    FOREIGN KEY (president_username) REFERENCES presidents (username)
 );''')
 
 cur.execute('''CREATE TABLE events(
-    id serial PRIMARY KEY,
-    name VARCHAR (50) UNIQUE NOT NULL,
+    name VARCHAR (50) PRIMARY KEY,
     description VARCHAR (500) NOT NULL,
     location VARCHAR (50) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    club_id INT NOT NULL,
-    FOREIGN KEY (club_id) REFERENCES clubs (id)
+    club_name VARCHAR (50) NOT NULL,
+    FOREIGN KEY (club_name) REFERENCES clubs (name)
 );''')
 
 
