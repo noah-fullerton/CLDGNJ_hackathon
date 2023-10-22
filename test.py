@@ -9,6 +9,16 @@ sample_user = {
     "phone_number" : "1234567890"
 }
 
+sample_president = {
+    "username" : "nono",
+    "password" : "1234",
+    "first_name" : "noah",
+    "last_name" : "fullerton",
+    "email" : "noahmfullerton@gmail.com",
+    "phone_number" : "1234567890"
+
+}
+
 sample_club = {
         "name" : "Computer Science Club",
         "description" : "We do cool stuff",
@@ -26,5 +36,13 @@ sample_event = {
 
 controller = db_control.Controller()
 controller.insertUsers(sample_user)
+controller.insertPresidents(sample_president)
 controller.insertClubs(sample_club)
 controller.insertEvents(sample_event)
+
+print(controller.getUsers())
+print(controller.getClubs())
+print(controller.getEvents())
+print(controller.getSpecificUser({"username": "isolate"}))
+print(controller.getSpecificClub({"name": "Computer Science Club"}))
+print(controller.getSpecificEvent({"name": "Hackathon"}))

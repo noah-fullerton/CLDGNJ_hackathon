@@ -42,42 +42,50 @@ class Controller:
     def getUsers(self):
         query = '''
         SELECT * FROM users'''
-        return self.cur.execute(query)
+        self.cur.execute(query)
+        return self.cur.fetchall()
     
     def getSpecificUser(self, username):
         query = '''
         SELECT * FROM users WHERE username = %(username)s'''
-        return self.cur.execute(query, username)
+        self.cur.execute(query, username)
+        return self.cur.fetchall()
     
     def getPresidents(self):
         query = '''
         SELECT * FROM presidents'''
-        return self.cur.execute(query)
+        self.cur.execute(query)
+        return self.cur.fetchall()
     
     def getSpecificPresident(self, username):
         query = '''
         SELECT * FROM presidents WHERE username = %(username)s'''
-        return self.cur.execute(query, username)
+        self.cur.execute(query, username)
+        return self.cur.fetchall()
     
     def getClubs(self):
         query = '''
         SELECT * FROM clubs'''
-        return self.cur.execute(query)
+        self.cur.execute(query)
+        return self.cur.fetchall()
     
     def getSpecificClub(self, name):
         query = '''
         SELECT * FROM clubs WHERE name = %(name)s'''
-        return self.cur.execute(query, name)
+        self.cur.execute(query, name)
+        return self.cur.fetchall()
     
     def getEvents(self):
         query = '''
         SELECT * FROM events'''
-        return self.cur.execute(query)
+        self.cur.execute(query)
+        return self.cur.fetchall()
     
     def getSpecificEvent(self, name):
         query = '''
         SELECT * FROM events WHERE name = %(name)s'''
-        return self.cur.execute(query, name)
+        self.cur.execute(query, name)
+        return self.cur.fetchall()
 
 
 
