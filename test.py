@@ -22,7 +22,7 @@ sample_president = {
 sample_club = {
         "name" : "Computer Science Club",
         "description" : "We do cool stuff",
-        "president_id" : 1
+        "president_username" : "nono"
 }
 
 sample_event = {
@@ -31,7 +31,7 @@ sample_event = {
     "location" : "Cafe",
     "start_date" : "2019-11-11",
     "end_date" : "2019-11-11",
-    "club_id" : "1"
+    "club_name" : "Computer Science Club"
 }
 
 controller = db_control.Controller()
@@ -45,4 +45,4 @@ print(controller.getClubs())
 print(controller.getEvents())
 print(controller.getSpecificUser({"username": "isolate"}))
 print(controller.getSpecificClub({"name": "Computer Science Club"}))
-print(controller.getSpecificEvent({"name": "Hackathon"}))
+print(controller.getSpecificEvent({"name": "Hackathon"})) 

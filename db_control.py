@@ -27,15 +27,15 @@ class Controller:
     
     def insertClubs(self, data):
         query = '''
-        INSERT INTO clubs (name, description, president_id)
-        VALUES (%(name)s, %(description)s, %(president_id)s)'''
+        INSERT INTO clubs (name, description, president_username)
+        VALUES (%(name)s, %(description)s, %(president_username)s)'''
         self.cur.execute(query, data)
         self.conn.commit()
 
     def insertEvents(self, data):
         query = '''
-        INSERT INTO events (name, description, location, start_date, end_date, club_id)
-        VALUES (%(name)s, %(description)s, %(location)s, %(start_date)s, %(end_date)s, %(club_id)s)'''
+        INSERT INTO events (name, description, location, start_date, end_date, club_name)
+        VALUES (%(name)s, %(description)s, %(location)s, %(start_date)s, %(end_date)s, %(club_name)s)'''
         self.cur.execute(query, data)
         self.conn.commit()
 
@@ -86,6 +86,7 @@ class Controller:
         SELECT * FROM events WHERE name = %(name)s'''
         self.cur.execute(query, name)
         return self.cur.fetchall()
+    
 
 
 
