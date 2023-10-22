@@ -1,25 +1,32 @@
-
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS clubs;
+DROP TABLE IF EXISTS presidents;
+DROP TABLE IF EXISTS officers;
 DROP TABLE IF EXISTS users;
+
 CREATE TABLE users(
     id serial PRIMARY KEY,
     username VARCHAR (16) UNIQUE NOT NULL,
-    password VARCHAR (50) NOT NULL,
+    password VARCHAR (16) NOT NULL,
     first_name VARCHAR (50) NOT NULL,
     last_name VARCHAR (50) NOT NULL,
     email VARCHAR (355) UNIQUE NOT NULL,
     phone_number BIGINT NOT NULL
     );
 
-DROP TABLE IF EXISTS presidents;
+
+INSERT INTO users (username, password, first_name, last_name, email, phone_number)
+VALUES ('isolate', '1234', 'joaquin', 'trujillo', 'joaquintrujillo@mac.com', 1234567890);
+
 CREATE TABLE presidents(
-    pid serial PRIMARY KEY,
+    pid serial PRIMARY KEY
 ) INHERITS (users);
 
-DROP TABLE IF EXISTS officers;
+
 CREATE TABLE officers(
 ) INHERITS (users);
 
-DROP TABLE IF EXISTS clubs;
+
 CREATE TABLE clubs(
     id serial PRIMARY KEY,
     name VARCHAR (50) UNIQUE NOT NULL,
@@ -28,7 +35,7 @@ CREATE TABLE clubs(
     FOREIGN KEY (president_id) REFERENCES presidents (pid)
 );
 
-DROP TABLE IF EXISTS events;
+
 CREATE TABLE events(
     id serial PRIMARY KEY,
     name VARCHAR (50) UNIQUE NOT NULL,
