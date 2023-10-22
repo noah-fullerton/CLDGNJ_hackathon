@@ -46,9 +46,7 @@ cur.execute('''CREATE TABLE events(
     description VARCHAR (500) NOT NULL,
     location VARCHAR (50) NOT NULL,
     start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    club_name VARCHAR (50) NOT NULL,
-    FOREIGN KEY (club_name) REFERENCES clubs (name)
+    end_date DATE NOT NULL
 );''')
 
 

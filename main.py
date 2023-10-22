@@ -1,6 +1,8 @@
 from flask import request, Flask, jsonify
 import sys
 import db_control
+import json
+from flask_cors import CORS
 
 controller = db_control.Controller()
 
@@ -10,15 +12,16 @@ def create_app():
     return app
 
 app = create_app()
+CORS(app)
 
 #for login page get user and pass TODO: CHECK DATABASE FOR ACCOUNT IF EXIST SEND TRUE IF NOT SENF FALSE
-@app.route("/", methods=['GET'])
+@app.route("/", methods=['POST'])
 def process():
     data = request.get_json()
     user_name = data['user_name']
     password = data['password']
-    check_login(user_name,password)
-    return jsonify({'success':'TRUE'})
+    #check_login(user_name,password)
+    return check_login(user_name,password)
 
 #for new account registration 
 #Checks for empty inputs return false
@@ -26,9 +29,12 @@ def process():
 #checks for password comfirmation
 #TODO: Put into database
 
-@app.route('/register', methods = ['GET'])
+@app.route('/register', methods = ['POST'])
 def register():
     data = request.get_json()
+
+    print(json.dumps(data))
+
     user_name = data['user_name']
     password = data['password']
     confirm_password = data['confirm_password']
@@ -49,7 +55,7 @@ def register():
         return jsonify({'success': 'FALSE'})
     # if password has less than 6 char OR password has more than 16 char
     if len(password) < 6 or len(password) > 16:
-        return jsonify({'success': 'FALSE'})
+        return jsonify({'success': 'FALSE', 'password_length':'FALSE'})
     # if First Name has more than 50 char
     if len(first_name) > 50:
         return jsonify({'success': 'FALSE'})
@@ -70,13 +76,13 @@ def register():
                 return ConnectionResetError
     """
     if password == confirm_password:
-        create_user(user_name,password,first_name,last_name,phone_number,email)
+        create_user_dict(user_name,password,first_name,last_name,phone_number,email)
         return jsonify({'success': 'TRUE'})
     else:
         return jsonify({'success': 'FALSE'})
 
 #Event route
-@app.route("/event", methods=['GET'])
+@app.route("/event", methods=['POST'])
 def event_handler():
     data = request.get_json()
     event_name = data['name']
@@ -84,11 +90,28 @@ def event_handler():
     end_date = data['end_date']
     location = data['location']
     description = data['description']
-    club_name = data['club_name']
+    #club_name = data['club_name']
+    create_event(event_name,start_date,end_date,location,description)
     return jsonify({'success':'TRUE'})
 
+def create_event(event_name, start_date, end_date, location, description):
+    sample_event = {
+        "name" : event_name,
+        "description" : description,
+        "location" : location,
+        "start_date" : start_date,
+        "end_date" : end_date,
+    }
+    event = controller.insertEvents(sample_event)
+    
 
-def create_user(user_name, password, first_name, last_name, phone_number, email):
+@app.route("/all_events", methods=['POST'])
+def send_events():
+    events = controller.getEvents()
+    return events
+
+
+def create_user_dict(user_name, password, first_name, last_name, phone_number, email):
     dict_user ={
         "username" : user_name,
         "password" : password,
@@ -102,12 +125,18 @@ def create_user(user_name, password, first_name, last_name, phone_number, email)
     
 
 def check_login(user_name, Password):
-    #use for database
-    pass
+    event = controller.getSpecificUser({"username":user_name})
+    if event == []:
+        return jsonify({"success":"FALSE"})
+    elif event[0][1] == user_name and event[0][2] == Password:
+        return jsonify({"success":"TRUE"})
+    else:       
+        return jsonify({"success":"FALSE"})
 
 
 if __name__ == '__main__': #main name space run here
 
+    print(send_events())
     for line in sys.path: #helps us see what path we are in
         print(line)  # Print path
 

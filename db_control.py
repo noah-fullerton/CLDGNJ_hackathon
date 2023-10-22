@@ -34,8 +34,8 @@ class Controller:
 
     def insertEvents(self, data):
         query = '''
-        INSERT INTO events (name, description, location, start_date, end_date, club_name)
-        VALUES (%(name)s, %(description)s, %(location)s, %(start_date)s, %(end_date)s, %(club_name)s)'''
+        INSERT INTO events (name, description, location, start_date, end_date)
+        VALUES (%(name)s, %(description)s, %(location)s, %(start_date)s, %(end_date)s)'''
         self.cur.execute(query, data)
         self.conn.commit()
 
