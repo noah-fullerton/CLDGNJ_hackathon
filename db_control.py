@@ -39,3 +39,53 @@ class Controller:
         self.cur.execute(query, data)
         self.conn.commit()
 
+    def getUsers(self):
+        query = '''
+        SELECT * FROM users'''
+        self.cur.execute(query)
+        return self.cur.fetchall()
+    
+    def getSpecificUser(self, username):
+        query = '''
+        SELECT * FROM users WHERE username = %(username)s'''
+        self.cur.execute(query, username)
+        return self.cur.fetchall()
+    
+    def getPresidents(self):
+        query = '''
+        SELECT * FROM presidents'''
+        self.cur.execute(query)
+        return self.cur.fetchall()
+    
+    def getSpecificPresident(self, username):
+        query = '''
+        SELECT * FROM presidents WHERE username = %(username)s'''
+        self.cur.execute(query, username)
+        return self.cur.fetchall()
+    
+    def getClubs(self):
+        query = '''
+        SELECT * FROM clubs'''
+        self.cur.execute(query)
+        return self.cur.fetchall()
+    
+    def getSpecificClub(self, name):
+        query = '''
+        SELECT * FROM clubs WHERE name = %(name)s'''
+        self.cur.execute(query, name)
+        return self.cur.fetchall()
+    
+    def getEvents(self):
+        query = '''
+        SELECT * FROM events'''
+        self.cur.execute(query)
+        return self.cur.fetchall()
+    
+    def getSpecificEvent(self, name):
+        query = '''
+        SELECT * FROM events WHERE name = %(name)s'''
+        self.cur.execute(query, name)
+        return self.cur.fetchall()
+
+
+
